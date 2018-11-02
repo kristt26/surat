@@ -1,0 +1,68 @@
+<div class="app-title">
+    <div>
+        <h1>Data Struktural STIMIK Sepuluh Nopember</h1>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+        <button id="modal-865424" data-toggle="modal" data-target="#Tambah" title="Tambah Struktural" class="btn btn-success fa fa-plus"></button>
+    </ul>
+</div>
+<div class="row" ng-init="Init()">
+    <div class="clearfix"></div>
+    <div class="col-md-12">
+        <div class="tile">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Struktural</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in DatasStruktural">
+                        <td></td>
+                        <td>{{item.nm_struktural}}</td>
+                        <td>
+                            <button id="modal-865424" data-toggle="modal" data-target="#TambahKategori" title="Edit" class="btn btn-success fa fa-pencil"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="Tambah" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">
+                    Tambah Struktural
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="Simpan()">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nama Struktural</label>
+                        <input class="form-control" type="text" ng-model="DataInput.nm_struktural" aria-describedby="emailHelp" placeholder="Nama Strukutural" required>
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary" value="Simpan">
+                        <!-- <button data-dismiss="modal" type="submit" >
+                            Save changes
+                        </button> -->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>

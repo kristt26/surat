@@ -1,0 +1,90 @@
+<div class="app-title">
+    <div>
+        <h1>Compose Mail</h1>
+    </div>
+</div>
+<div class="row" ng-init="Init()">
+    <div class="clearfix"></div>
+    <div class="col-md-6">
+        <div class="tile">
+            <div class="tile-body">
+                <form ng-submit="Simpan()" class="form-horizontal">
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Nomor Surat</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="DatasInput.nomor_surat" required>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Perihal</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="DatasInput.lampiran" required>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Tanggal Surat</label>
+                        <div class="col-md-8">
+                            <input type="date" class="form-control" ng-model="DatasInput.tg_surat" required>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Penerima</label>
+                        <div class="col-md-8">
+                            <select class="form-control" ng-options="item as item.nm_struktural for item in DatasPejabat track by item.idstruktural" ng-model="DatasPenerima" required></select>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Katetori Surat</label>
+                        <div class="col-md-8">
+                            <select class="form-control" ng-options="item as item.nama_kategori for item in DatasKategori track by item.idkategori" ng-model="SelectedKategori" required></select>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1" class="control-label col-md-3">Tembusan</label>
+                        <div class="col-md-8">
+                            <select class="form-control" ng-options="item as item.nm_struktural for item in DatasPejabat track by item.idstruktural" ng-change="PilihTembusan()" ng-model="SelectedTembusan" required></select>
+                            <div class="form-group row" ng-repeat="item in DatasTembusan">
+                                <label for="exampleInputEmail1" class="control-label col-md-8">{{item.nm_struktural}}</label>
+
+                                <div class="col-md-4">
+                                    <a class="fa fa-close" ng-click="HapusTembusan(item)"></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-3">Berkas</label>
+                        <div class="col-md-8">
+                            <input type="file" file-input="files" class="form-control" accept="application/pdf" id="validatedCustomFile" ng-model="InputData.Berkas" onchange="angular.element(this).scope().uploadedFile(this);" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Simpan"> {{$scope.DataSession.Authentification.nama_pengguna}}
+                        <!-- <button data-dismiss="modal" type="submit" >
+                            Save changes
+                        </button> -->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div ng-show="ShowBerkas">
+            <!-- <embed src="{{datasample}}"></embed> -->
+            <object data="{{datasample}}" type="application/pdf" style="width: 100%; height: 400px;"></object>
+
+        </div>
+    </div>
+    <h1>{{DataSession.session.nama_pengguna}}</h1>
+
+</div>

@@ -1,0 +1,14 @@
+<ul>
+    <li ng-repeat="customer in DataService.pagedData | limitTo:DataService.pageSize">
+        {{customer}}
+    </li>
+</ul>
+<button ng-disabled="DataService.pageButtonDisabled(-1)" ng-click="DataService.paginate(-1)">Previous</button>&nbsp;&nbsp;
+<button ng-disabled="DataService.pageButtonDisabled(1)" ng-click="DataService.paginate(1)">Next</button>
+<br /><br /> Page {{DataService.currentPage+1}} of {{DataService.totalPages}}
+<div class="text-right"><span class="text-muted mr-2">Showing {{DataService.firstrow}}-{{DataService.endrow}} out of {{DataService.TotalData}}</span>
+    <div class="btn-group">
+        <button class="btn btn-primary btn-sm" type="button" ng-disabled="DataService.pageButtonDisabled(-1)" ng-click="DataService.paginate(-1)"><i class="fa fa-chevron-left"></i></button>
+        <button class="btn btn-primary btn-sm" type="button" ng-disabled="DataService.pageButtonDisabled(1)" ng-click="DataService.paginate(1)"><i class="fa fa-chevron-right"></i></button>
+    </div>
+</div>

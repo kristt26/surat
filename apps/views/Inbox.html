@@ -1,0 +1,27 @@
+<div class="table-responsive mailbox-messages">
+    <table class="table table-hover">
+        <tbody>
+            <tr ng-repeat="item in DatasSuratInternal">
+                <!-- <td>
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox"><span class="label-text"> </span>
+                        </label>
+                    </div>
+                </td> -->
+                <!-- <td><a href="#"><i class="fa fa-star-o"></i></a></td> -->
+                <td><a href="read-mail.html">{{item.NamaPengirim}}</a></td>
+                <td class="mail-subject">{{item.lampiran}}</td>
+                <!-- <td><i class="fa fa-paperclip"></i></td> -->
+                <td>
+                    <button id="modal-865424" title="Edit" class="btn btn-success fa fa-pencil"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <form method="post">
+        <!-- <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea> -->
+        <!-- <button ng-click="getContent()">Get content</button>
+        <button ng-click="setContent()">Set content</button> -->
+    </form>
+</div>
