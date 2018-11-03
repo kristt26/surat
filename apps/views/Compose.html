@@ -33,7 +33,7 @@
                     <div class="form-group row">
                         <label for="exampleInputEmail1" class="control-label col-md-3">Penerima</label>
                         <div class="col-md-8">
-                            <select class="form-control" ng-options="item as item.nm_struktural for item in DatasPejabat track by item.idstruktural" ng-model="DatasPenerima" required></select>
+                            <select class="form-control" ng-options="item as item.nm_struktural for item in DatasPejabat track by item.idstruktural" ng-model="DatasPenerima" ng-change="PilihPenerima()" required></select>
                         </div>
 
                     </div>
@@ -47,7 +47,7 @@
                     <div class="form-group row">
                         <label for="exampleInputEmail1" class="control-label col-md-3">Tembusan</label>
                         <div class="col-md-8">
-                            <select class="form-control" ng-options="item as item.nm_struktural for item in DatasPejabat track by item.idstruktural" ng-change="PilihTembusan()" ng-model="SelectedTembusan" required></select>
+                            <select class="form-control" ng-options="item as item.nm_struktural for item in Tembusans track by item.idstruktural" ng-change="PilihTembusan()" ng-model="SelectedTembusan" required></select>
                             <div class="form-group row" ng-repeat="item in DatasTembusan">
                                 <label for="exampleInputEmail1" class="control-label col-md-8">{{item.nm_struktural}}</label>
 

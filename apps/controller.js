@@ -366,11 +366,25 @@ angular
 
     $scope.DatasKategori = [];
     $scope.DatasTembusan = [];
+    $scope.Tembusans = [];
     $scope.DatasPenerima = {};
     $scope.SelectedTembusan = {};
     $scope.DatasPejabat = [];
     $scope.SelectedKategori = {};
+    $scope.session = {};
     $scope.Init = function() {
+        $scope.session = {};
+        var Urlauth = "api/datas/read/auth.php";
+        $http({
+                method: "get",
+                url: Urlauth,
+            })
+            .then(function(response) {
+                if (response.data.Session == false) {
+                    window.location.href = 'index.html';
+                } else
+                    $scope.session = response.data.Session;
+            }, function(error) {})
 
         var UrlKategori = "api/datas/read/ReadKategori.php";
         $http({
@@ -389,6 +403,13 @@ angular
         }).then(
             function(response) {
                 $scope.DatasPejabat = response.data.records;
+                angular.forEach($scope.DatasPejabat, function(value, key) {
+                    if (value.idpengguna == $scope.session.idpengguna) {
+                        var index = $scope.DatasPejabat.findIndex(DatasPejabat => DatasPejabat.idpengguna == $scope.session.idpengguna);
+                        $scope.DatasPejabat.splice(index, 1);
+                        $scope.Tembusans = angular.copy($scope.DatasPejabat);
+                    }
+                })
             },
             function(error) {
                 alert(error.data.message);
@@ -419,15 +440,32 @@ angular
 
     $scope.PilihTembusan = function() {
         $scope.DatasTembusan.push(angular.copy($scope.SelectedTembusan));
-        var index = $scope.DatasPejabat.indexOf(angular.copy($scope.SelectedTembusan));
-        $scope.DatasPejabat.splice(index, 1);
+        var index = $scope.Tembusans.findIndex(Tembusans => Tembusans.idpengguna == $scope.SelectedTembusan.idpengguna);
+        $scope.Tembusans.splice(index, 1);
         $scope.SelectedTembusan = {};
     }
 
+    $scope.TemPenerima = {};
+    $scope.PilihPenerima = function() {
+        if ($scope.TemPenerima.idpengguna == undefined) {
+            $scope.TemPenerima = angular.copy($scope.DatasPenerima);
+            var index = $scope.Tembusans.findIndex(Tembusans => Tembusans.idpengguna == $scope.DatasPenerima.idpengguna);
+            $scope.Tembusans.splice(index, 1);
+        } else {
+            if ($scope.TemPenerima.idpengguna != $scope.DatasPenerima.idpengguna) {
+                $scope.DatasPejabat.push(angular.copy($scope.TemPenerima));
+                $scope.TemPenerima = angular.copy($scope.DatasPenerima);
+                var index = $scope.Tembusans.findIndex(Tembusans => Tembusans.idpengguna == $scope.DatasPenerima.idpengguna);
+                $scope.Tembusans.splice(index, 1);
+            }
+        }
+
+    }
+
     $scope.HapusTembusan = function(item) {
-        var index = $scope.DatasTembusan.indexOf(item);
+        var index = $scope.DatasTembusan.findIndex(DatasTembusan => DatasTembusan.idpengguna == item.idpengguna);
         $scope.DatasTembusan.splice(index, 1);
-        $scope.DatasPejabat.push(item);
+        $scope.Tembusans.push(item);
     }
 
     $scope.Simpan = function() {
@@ -455,9 +493,22 @@ angular
                 $scope.DatasInput.NamaTujuan = $scope.DatasPenerima.nama_pengguna;
                 $scope.DatasInput.StrukturalTujuan = $scope.DatasPenerima.nm_struktural;
                 $scope.DatasInput.pengirim = $scope.DatasPenerima.nm_struktural;
+                $scope.DatasInput.idkategori_surat = $scope.SelectedKategori.idkategori_surat;
+                $scope.DataInput.tembusan = $scope.DatasTembusan;
+                $scope.DataInput.pengirim = $scope.session.idpengguna;
+                var Url = "api/datas/create/CreateSuratInternal.php";
+                $http({
+                    method: "POST",
+                    url: Url,
+                    data: $scope.DatasInput
+                }).then(function(response) {
+
+                }, function(error) {
+                    alert(error.data.message);
+                })
             }
         }, function(error) {
-            alert(error.data.message);
+            alert(error.message);
         })
     }
 })
