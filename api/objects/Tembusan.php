@@ -29,7 +29,7 @@ class Tembusan
         $stmt->bindParam(2, $this->idpejabat);
 
         if($stmt->execute()){
-            $this->idtembusan= $conn->lastInsertId();
+            $this->idtembusan= $this->conn->lastInsertId();
             return true;
         }else
         {

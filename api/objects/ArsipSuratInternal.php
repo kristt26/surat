@@ -26,6 +26,24 @@ class ArsipSuratInternal
         return $stmt;
     }
 
+    public function readByTujuan()
+    {
+        $query = "SELECT * FROM ".$this->table_name." WHERE tujuan=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->tujuan);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function readByPengirim()
+    {
+        $query = "SELECT * FROM ".$this->table_name." WHERE pengirim=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->pengirim);
+        $stmt->execute();
+        return $stmt;
+    }
+
     public function create()
     {
         $query = "INSERT INTO ".$this->table_name." SET nomor_surat=?, lampiran=?, tujuan=?, pengirim=?, tg_surat=?, berkas=?, idkategori_surat=?, status=?";
@@ -40,7 +58,7 @@ class ArsipSuratInternal
         $stmt->bindParam(8, $this->status);
 
         if($stmt->execute()){
-            $this->idarsip_surat= $conn->lastInsertId();
+            $this->idarsip_surat= $this->conn->lastInsertId();
             return true;
         }else
         {
