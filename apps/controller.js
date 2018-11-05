@@ -330,10 +330,15 @@ angular
                     data: $scope.session
                 }).then(function(response) {
                     $scope.DatasSuratInternal = response.data.records;
-                    var b = $scope.DatasSuratInternal[0].tujuan;
-                    $scope.DataService.init(b);
-                    var a = $scope.DatasSuratInternal[1].pengirim;
-                    $scope.DataSend.init(a);
+                    if ($scope.DatasSuratInternal[0].tujuan != undefined) {
+                        var b = $scope.DatasSuratInternal[0].tujuan;
+                        $scope.DataService.init(b);
+                    }
+                    if ($scope.DatasSuratInternal[1].pengirim != undefined) {
+                        var a = $scope.DatasSuratInternal[1].pengirim;
+                        $scope.DataSend.init(a);
+                    }
+
                 }, function(error) {
                     alert(error.data.message);
                 })
