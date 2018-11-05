@@ -1,5 +1,5 @@
 angular
-    .module("Ctrl", ["datatables", "datatables.buttons", "jlareau.pnotify"])
+    .module("Ctrl", ["datatables", "datatables.buttons", "jlareau.pnotify", "pdfjsViewer"])
 
 .controller("UserSession", function($scope, $http) {
     $scope.session = {};
@@ -139,6 +139,7 @@ angular
 .controller("StrukturalController", function(
     $scope,
     $http,
+    notificationService
 ) {
     $scope.DatasStruktural = [];
     $scope.DataInput = {};
@@ -305,19 +306,40 @@ angular
     };
 })
 
-.controller("MailboxController", function($scope, $http, dataFactory) {
+.controller("MailboxController", function($scope, $http, DataFactory) {
     $scope.DatasSuratInternal = [];
-
+    $scope.session = {};
+    $scope.DataService = new dataFactory();
+    $scope.DataSend = new dataFactory();
+    $scope.Itemread = {};
     $scope.Init = function() {
-        var Url = "api/datas/read/ReadSuratInternal.php";
+        var Urlauth = "api/datas/read/auth.php";
         $http({
-            method: "GET",
-            url: Url
-        }).then(function(response) {
+                method: "get",
+                url: Urlauth,
+            })
+            .then(function(response) {
+                if (response.data.Session == false) {
+                    window.location.href = 'index.html';
+                } else
+                    $scope.session = response.data.Session;
+                var Url = "api/datas/read/ReadSuratInternal.php";
+                $http({
+                    method: "POST",
+                    url: Url,
+                    data: $scope.session
+                }).then(function(response) {
+                    $scope.DatasSuratInternal = response.data.records;
+                    var b = $scope.DatasSuratInternal[0].tujuan;
+                    $scope.DataService.init(b);
+                    var a = $scope.DatasSuratInternal[1].pengirim;
+                    $scope.DataSend.init(a);
+                }, function(error) {
+                    alert(error.data.message);
+                })
+            }, function(error) {})
 
-        }, function(error) {
-            alert(error.data.message);
-        })
+
     }
 
     $scope.tinymceModel = 'Initial content';
@@ -336,14 +358,37 @@ angular
         skin: 'lightgray',
         theme: 'modern'
     };
-    $scope.DataService = dataFactory;
-    $scope.Datas = [];
-    for (var i = 0; i < 92; i++) {
-        $scope.Datas.push("Customer " + i);
-    }
-    $scope.DataService.init($scope.Datas);
 
-    $scope.DataService
+    $scope.ShowTembusan = "";
+    $scope.pdf = {};
+    $scope.read = function(item) {
+        $scope.Itemread = item;
+        var panjang = $scope.Itemread.tembusan.length;
+        angular.forEach(item.tembusan, function(value, key) {
+            if (panjang == key + 1)
+                $scope.ShowTembusan += value.nama_pejabat + " | " + value.nama_struktural;
+            else
+                $scope.ShowTembusan += value.nama_pejabat + " | " + value.nama_struktural + ",";
+        })
+
+        var paths = "../surat/assets/berkas/" + $scope.Itemread.berkas;
+        $http.get(paths, {
+            responseType: 'arraybuffer'
+        }).then(function(response) {
+            $scope.pdf.data = new Uint8Array(response.data);
+            var binstr = Array.prototype.map.call($scope.pdf.data, function(ch) {
+                return String.fromCharCode(ch);
+            }).join('');
+            $scope.pdf.basee = btoa(binstr);
+        });
+        $scope.pdf.src = $scope.Itemread.berkas;
+
+        function bufferToBase64(buf) {
+
+        }
+        $scope.Url = "apps/views/Read.html";
+    }
+
 
 
     $scope.Url = "apps/views/Inbox.html";
@@ -373,7 +418,6 @@ angular
     $scope.SelectedKategori = {};
     $scope.session = {};
     $scope.Init = function() {
-        $scope.session = {};
         var Urlauth = "api/datas/read/auth.php";
         $http({
                 method: "get",
@@ -492,16 +536,23 @@ angular
                 $scope.DatasInput.tujuan = $scope.DatasPenerima.idpejabat;
                 $scope.DatasInput.NamaTujuan = $scope.DatasPenerima.nama_pengguna;
                 $scope.DatasInput.StrukturalTujuan = $scope.DatasPenerima.nm_struktural;
-                $scope.DatasInput.pengirim = $scope.DatasPenerima.nm_struktural;
+                $scope.DatasInput.pengirim = $scope.session.idpejabat;
+                $scope.DatasInput.NamaPengirim = $scope.session.nama_pengguna;
+                $scope.DatasInput.StrukturalPengirim = $scope.session.nm_struktural;
                 $scope.DatasInput.idkategori_surat = $scope.SelectedKategori.idkategori_surat;
-                $scope.DataInput.tembusan = $scope.DatasTembusan;
-                $scope.DataInput.pengirim = $scope.session.idpengguna;
+                $scope.DatasInput.nama_kategori = $scope.SelectedKategori.nama_kategori;
+                $scope.DatasInput.tembusan = $scope.DatasTembusan;
+                $scope.DatasInput.status = "false";
                 var Url = "api/datas/create/CreateSuratInternal.php";
                 $http({
                     method: "POST",
                     url: Url,
                     data: $scope.DatasInput
                 }).then(function(response) {
+                    if (response.data.message == "Sender") {
+                        alert("Pesan Terkirim");
+                        window.location.href = 'pejabat.html#!/Mailbox';
+                    }
 
                 }, function(error) {
                     alert(error.data.message);

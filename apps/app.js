@@ -64,7 +64,9 @@ app.service('fileUpload', ['$http', function($http) {
     }
 }]);
 
-app.factory('dataFactory', function() {
+
+
+function dataFactory() {
     var factory = {};
 
     factory.currentPage = 0;
@@ -100,12 +102,13 @@ app.factory('dataFactory', function() {
         factory.TotalData = factory.Items.length;
         factory.totalPages = Math.ceil(factory.TotalData / factory.pageSize);
         factory.paginate(0);
-
-
     }
 
     return factory;
-});
+};
+
+app.factory("DataFactory", dataFactory);
+
 
 app.factory("Services", function($http, $location, $q) {
 

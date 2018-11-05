@@ -1,7 +1,7 @@
 <div class="table-responsive mailbox-messages">
     <table class="table table-hover">
         <tbody>
-            <tr ng-repeat="item in DatasSuratInternal">
+            <tr ng-repeat="item in DataService.pagedData | limitTo:DataService.pageSize" ng-click="read(item)">
                 <!-- <td>
                     <div class="animated-checkbox">
                         <label>
@@ -10,8 +10,10 @@
                     </div>
                 </td> -->
                 <!-- <td><a href="#"><i class="fa fa-star-o"></i></a></td> -->
-                <td><a href="read-mail.html">{{item.NamaPengirim}}</a></td>
-                <td class="mail-subject">{{item.lampiran}}</td>
+                <td ng-show="item.status=='false'"><a href="read-mail.html"><b>{{item.NamaPengirim}}</b></a></td>
+                <td ng-show="item.status=='false'" class="mail-subject"><b>{{item.lampiran}}</b></td>
+                <td ng-show="item.status=='true'"><a href="read-mail.html">{{item.NamaPengirim}}</a></td>
+                <td ng-show="item.status=='true'" class="mail-subject">{{item.lampiran}}</td>
                 <!-- <td><i class="fa fa-paperclip"></i></td> -->
                 <td>
                     <button id="modal-865424" title="Edit" class="btn btn-success fa fa-pencil"></button>
@@ -19,6 +21,12 @@
             </tr>
         </tbody>
     </table>
+    <div class="text-right"><span class="text-muted mr-2">Showing {{DataService.firstrow}}-{{DataService.endrow}} out of {{DataService.TotalData}}</span>
+        <div class="btn-group">
+            <button class="btn btn-primary btn-sm" type="button" ng-disabled="DataService.pageButtonDisabled(-1)" ng-click="DataService.paginate(-1)"><i class="fa fa-chevron-left"></i></button>
+            <button class="btn btn-primary btn-sm" type="button" ng-disabled="DataService.pageButtonDisabled(1)" ng-click="DataService.paginate(1)"><i class="fa fa-chevron-right"></i></button>
+        </div>
+    </div>
     <form method="post">
         <!-- <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea> -->
         <!-- <button ng-click="getContent()">Get content</button>
