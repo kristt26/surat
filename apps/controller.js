@@ -334,8 +334,8 @@ angular
                         var b = $scope.DatasSuratInternal[0].tujuan;
                         $scope.DataService.init(b);
                     }
-                    if ($scope.DatasSuratInternal[1].pengirim != undefined) {
-                        var a = $scope.DatasSuratInternal[1].pengirim;
+                    if ($scope.DatasSuratInternal[0].pengirim != undefined) {
+                        var a = $scope.DatasSuratInternal[0].pengirim;
                         $scope.DataSend.init(a);
                     }
 
