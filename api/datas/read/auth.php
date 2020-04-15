@@ -11,13 +11,7 @@ include_once '../../objects/Pengguna.php';
 $database = new Database();
 $db = $database->getConnection();
  
-// initialize object
 $pengguna = new Pengguna($db);
- 
-// query products
-//$stmt = $bidang->read();   
-//$num = $stmt->rowCount();
- 
-// check if more than 0 record found
+
 echo json_encode(array("Session" => $pengguna->CheckSession()));
 ?>

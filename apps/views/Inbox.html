@@ -2,19 +2,10 @@
     <table class="table table-hover">
         <tbody>
             <tr ng-repeat="item in DataService.pagedData | limitTo:DataService.pageSize" ng-click="read(item)">
-                <!-- <td>
-                    <div class="animated-checkbox">
-                        <label>
-                            <input type="checkbox"><span class="label-text"> </span>
-                        </label>
-                    </div>
-                </td> -->
-                <!-- <td><a href="#"><i class="fa fa-star-o"></i></a></td> -->
                 <td ng-show="item.status=='false'"><a href="read-mail.html"><b>{{item.NamaPengirim}}</b></a></td>
                 <td ng-show="item.status=='false'" class="mail-subject"><b>{{item.lampiran}}</b></td>
                 <td ng-show="item.status=='true'"><a href="read-mail.html">{{item.NamaPengirim}}</a></td>
                 <td ng-show="item.status=='true'" class="mail-subject">{{item.lampiran}}</td>
-                <!-- <td><i class="fa fa-paperclip"></i></td> -->
                 <td>
                     <button id="modal-865424" title="Edit" class="btn btn-success fa fa-pencil"></button>
                 </td>
@@ -28,8 +19,5 @@
         </div>
     </div>
     <form method="post">
-        <!-- <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea> -->
-        <!-- <button ng-click="getContent()">Get content</button>
-        <button ng-click="setContent()">Set content</button> -->
     </form>
 </div>

@@ -6,6 +6,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $target_dir = "../../../assets/berkas/";
+$a = $_FILES;
 if(!isset($_FILES['file_upload']))
 {
     $response=array("status"=>0,"message"=>"File not choosen!");
@@ -25,14 +26,5 @@ if(!move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file))
     $response=array("status"=>1,"message"=>"Success", "namefile"=>$f_name);
     print json_encode($response);
 }
-        
-
-
-$uploaded_file=$f_name; //now in your further code/insert query you can use $uploaded_file varriable as file name into your db 
-
-
- //your further code here//
- //.....//
- //.....//
- //.....//
+$uploaded_file=$f_name;
 ?>
